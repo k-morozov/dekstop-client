@@ -4,6 +4,8 @@ stages:
 Conan:
   stage: build
   before_script:
+      - add-apt-repository universe && apt-get update
+      - apt-get install python3-pip
       - pip install conan
       - source ~/.profile
   script:  
