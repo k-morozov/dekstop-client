@@ -1,3 +1,6 @@
+[build_requires]
+cmake/3.16.3
+
 [requires]
 qt/5.15.2
 
