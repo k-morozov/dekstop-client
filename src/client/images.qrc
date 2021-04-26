@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/theme">
+        <file>gui/images/mainwindow.jpg</file>
+        <file>gui/images/chatwindow.jpg</file>
+    </qresource>
+</RCC>

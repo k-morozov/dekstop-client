@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>mainwindow.jpg</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>images.qrc</file>
+    </qresource>
+</RCC>

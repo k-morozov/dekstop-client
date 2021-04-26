@@ -1,0 +1,58 @@
+syntax = "proto3";
+import public "datetime.proto";
+
+package Serialize;
+
+enum STATUS {	
+	FAIL = 0;
+	OK = 1;
+}
+
+message InputResponse {
+	STATUS status = 1;
+	int32 msg_id = 2;
+	int32 client_id = 3;
+	int32 chat_id =4;
+}
+
+message RegResponse {
+	STATUS status = 1;
+	int32 msg_id = 2;
+	int32 client_id = 3;
+	int32 chat_id = 4;
+}
+
+message JoinRoomResponse {
+	STATUS status = 1;
+	int32 room_id = 2;
+	string channel_name = 3;
+}
+
+message TextResponse {
+	string login = 1;
+	int32 room_id = 2;
+	string channel_name = 3;
+	string text = 4;
+	Datetime datetime = 5;
+}
+
+message HistoryResponse {
+  string channel_name = 1;
+  repeated TextResponse messages = 2;
+}
+
+message ChannelsResponse {
+  repeated string channels = 1;
+}
+
+message Response {
+	oneof msg {
+		InputResponse input_response = 1;
+		RegResponse reg_response = 2;
+		JoinRoomResponse join_room_response = 3;
+		TextResponse text_response = 4;
+    HistoryResponse history_response = 5;
+    ChannelsResponse channels_response = 6;
+	}
+}
+
