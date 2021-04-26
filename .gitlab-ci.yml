@@ -1,0 +1,13 @@
+stages:
+  - build
+
+Conan:
+  stage: build
+  before_script:
+      - pip install conan
+      - source ~/.profile
+  script:  
+    - mkdir build && cd build
+    - conan profile new goodok-profile --detect
+    - conan profile update settings.compiler.version=8 goodok-profile
+    - conan install .. --profile goodok-profile
