@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.5)
 
 set(CLIENT_NAME appchat-client)
 
-set(CMAKE_AUTOUIC ON)
-set(CMAKE_AUTOMOC ON)
-set(CMAKE_AUTORCC ON)
+#set(CMAKE_AUTOUIC ON)
+#set(CMAKE_AUTOMOC ON)
+#set(CMAKE_AUTORCC ON)
 
 set(CLIENT_BIN  client)
 set(Control_dir control)
@@ -50,7 +50,7 @@ set(CLIENT_SOURCES
     ${Cache_dir}/history_cacher.cpp
 )
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+#find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package (Threads)
 
 add_executable(${CLIENT_NAME}  ${CLIENT_SOURCES})
@@ -62,8 +62,8 @@ add_executable(${CLIENT_NAME}  ${CLIENT_SOURCES})
 #        CXX_STANDARD_REQUIRED ON
 #)
 
-find_library(SQLITE3_LIBRARY NAMES sqlite3)
-find_package(Boost COMPONENTS system log REQUIRED)
+#find_library(SQLITE3_LIBRARY NAMES sqlite3)
+#find_package(Boost COMPONENTS system log REQUIRED)
 
 set_target_properties(${CLIENT_NAME} PROPERTIES
         CXX_STANDARD 17
@@ -73,33 +73,14 @@ set_target_properties(${CLIENT_NAME} PROPERTIES
 )
 
 target_include_directories(${CLIENT_NAME}
-    PUBLIC
-        ${CMAKE_BINARY_DIR}/src/protocol
     PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         ${GUI_dir}
 )
 
 target_link_libraries (${CLIENT_NAME}
-    ${CMAKE_THREAD_LIBS_INIT}
-    ${Boost_LIBRARIES}
-    ${SQLITE3_LIBRARY}
-    Qt5::Widgets
-    protocol_lib
-    project_warnings
-    project_sanitizers
-    stdc++fs
-#    messages_pb_lib
+    ${CONAN_LIBS_QT}
 )
-
-if (WIN32)
-    add_definitions(-DWIN32_LEAN_AND_MEAN)
-    target_link_libraries(${CLIENT_NAME} -lws2_32)
-endif (WIN32)
-
-if (NOT WIN32)
-    install(TARGETS ${CLIENT_NAME} RUNTIME DESTINATION bin)
-endif()
 
 
 

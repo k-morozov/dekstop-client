@@ -1,15 +1,21 @@
+image: ubuntu:bionic
 stages:
   - build
-
+variables:
+  CONAN_SYSREQUIRES_MODE: enabled
 Conan:
   stage: build
   before_script:
-      - add-apt-repository universe && apt-get update
-      - apt-get install python3-pip
-      - pip install conan
-      - source ~/.profile
-  script:  
+    - apt-get update
+    - apt-get install sudo -y
+    - apt-get install -y pkg-config
+    - apt upgrade
+    - apt-get install -y python3-pip
+    - pip3 install conan
+    - source ~/.profile
+  script:
     - mkdir build && cd build
     - conan profile new goodok-profile --detect
     - conan profile update settings.compiler.version=8 goodok-profile
-    - conan install .. --profile goodok-profile
+    - conan profile update settings.compiler.libcxx=libstdc++11 goodok-profile
+    - conan install -s build_type=Release .. --profile goodok-profile
