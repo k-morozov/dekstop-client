@@ -18,4 +18,4 @@ Conan:
     - conan profile new goodok-profile --detect
     - conan profile update settings.compiler.version=8 goodok-profile
     - conan profile update settings.compiler.libcxx=libstdc++11 goodok-profile
-    - conan install -s build_type=Release .. --profile goodok-profile
+    - conan install -s build_type=Release .. --build missing --profile goodok-profile
