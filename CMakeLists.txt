@@ -5,4 +5,10 @@ project(goodok-dekstop)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
-add_subdirectory(src/client)
+include(${CONAN_LIB_DIRS_PROTOBUF}/cmake/protobuf/protobuf-module.cmake)
+include(${CONAN_LIB_DIRS_PROTOBUF}/cmake/protobuf/protobuf-generate.cmake)
+
+#add_subdirectory(/home/focus/dev/goodok/repo/messaging-framework/)
+#add_subdirectory(../messaging-framework buildProtocol)
+
+add_subdirectory(src)
