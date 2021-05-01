@@ -16,5 +16,6 @@ Conan:
     - conan profile new goodok-profile --detect
     - conan profile update settings.compiler.version=9.3 goodok-profile
     - conan profile update settings.compiler.libcxx=libstdc++11 goodok-profile
+    - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
     - conan install .. --build missing --profile goodok-profile
 #    - conan install -s build_type=Release .. --build missing --profile goodok-profile
