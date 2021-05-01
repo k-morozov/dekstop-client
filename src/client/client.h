@@ -43,7 +43,7 @@ public:
 
     void join_channel(std::string);
 
-    void send_msg_to_server(msg_text_t msg);
+    void send_msg_to_server(goodok::command::msg_text_t msg);
 
 
     auto get_login() const noexcept { return login; }
@@ -75,12 +75,12 @@ public:
             return it->second;
         }
         else {
-            auto [it2, flag] = m_channels_history.emplace(a_channel_name, std::make_shared<std::deque<msg_text_t>>());
+            auto [it2, flag] = m_channels_history.emplace(a_channel_name, std::make_shared<std::deque<goodok::command::msg_text_t>>());
             return it2->second;
         }
 
     }
-    void set_login_id(identifier_t id)   { client_id = id;}
+    void set_login_id(goodok::command::identifier_t id)   { client_id = id;}
 
     void close_connection();
 
@@ -89,7 +89,7 @@ public:
         close_connection();
     }
 
-    void send_history_request(const std::string& channel_name, DateTime since);
+    void send_history_request(const std::string& channel_name, goodok::DateTime since);
     void send_channels_request();
 
 private:
@@ -99,15 +99,15 @@ private:
     const boost::asio::ip::tcp::resolver::results_type& eps;
 
     std::vector<uint8_t> __read_buffer;
-    std::array<uint8_t, Protocol::SIZE_HEADER> bin_buffer;
+    std::array<uint8_t, goodok::SIZE_HEADER> bin_buffer;
     std::queue<std::vector<uint8_t>> msg_to_server;
 
     std::string login;
     std::string password;
-    identifier_t client_id;
-    identifier_t current_room = 0;
+    goodok::command::identifier_t client_id;
+    goodok::command::identifier_t current_room = 0;
     std::string m_channel_name;
-    std::unordered_map<std::string, std::shared_ptr<std::deque<msg_text_t>>> m_channels_history;
+    std::unordered_map<std::string, std::shared_ptr<std::deque<goodok::command::msg_text_t>>> m_channels_history;
 
 private:
 
@@ -134,18 +134,18 @@ signals:
      * @param text 
      * @param dt date and time of sending the text
      */
-    void send_text(msg_text_t);
+    void send_text(goodok::command::msg_text_t);
 
     /**
      * @brief send input code
      */
-    void send_input_code(StatusCode);
+    void send_input_code(goodok::command::StatusCode);
 
     void sig_update_channels();
 
     void joined(const std::string& channel_name);
     
-    void history_received(const std::string& channel_name, const std::vector<msg_text_t>& hist);
+    void history_received(const std::string& channel_name, const std::vector<goodok::command::msg_text_t>& hist);
 
     void channels_received(const std::vector<std::string>& channels);
 };

@@ -16,7 +16,7 @@ MessageWidget::~MessageWidget()
   delete ui;
 }
 
-void MessageWidget::set_message(const msg_text_t& msg)
+void MessageWidget::set_message(const goodok::command::msg_text_t& msg)
 {
   ui->lAuthor->setText(QString::fromStdString(msg.author));
   ui->teText->setText(QString::fromStdString(msg.text));

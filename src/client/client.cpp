@@ -48,8 +48,8 @@ void Client::send_login_request(std::vector<uint8_t>&& __buffer) {
     });
 }
 
-void Client::send_history_request(const std::string& channel_name, DateTime since) {
-    auto request_to_send = Protocol::MsgFactory::serialize<TypeCommand::HistoryRequest>(
+void Client::send_history_request(const std::string& channel_name, goodok::DateTime since) {
+    auto request_to_send = goodok::MsgFactory::serialize<goodok::command::TypeCommand::HistoryRequest>(
         client_id, channel_name, since
     );
 
@@ -57,13 +57,13 @@ void Client::send_history_request(const std::string& channel_name, DateTime sinc
 }
 
 void Client::send_channels_request() {
-    auto request = Protocol::MsgFactory::serialize<TypeCommand::ChannelsRequest>(client_id);
+    auto request = goodok::MsgFactory::serialize<goodok::command::TypeCommand::ChannelsRequest>(client_id);
     add_msg_to_send(std::move(request));
 }
 
 void Client::async_read_pb_header() {
 //    qDebug() << "called async_read_pb_header()";
-    boost::asio::async_read(sock, boost::asio::buffer(bin_buffer.data(), Protocol::SIZE_HEADER),
+    boost::asio::async_read(sock, boost::asio::buffer(bin_buffer.data(), goodok::SIZE_HEADER),
                             std::bind(&Client::do_read_pb_header,
                                       shared_from_this(),
                                       std::placeholders::_1,
@@ -76,7 +76,7 @@ void Client::do_read_pb_header(boost::system::error_code error, std::size_t) {
 //        qDebug() << "new header read: " << nbytes << " bytes";
 
         Serialize::Header new_header;
-        bool flag = new_header.ParseFromArray(bin_buffer.data(), Protocol::SIZE_HEADER);
+        bool flag = new_header.ParseFromArray(bin_buffer.data(), goodok::SIZE_HEADER);
         if (flag) {
             qDebug() << "parse header: OK";
         } else {
@@ -93,8 +93,8 @@ void Client::do_read_pb_header(boost::system::error_code error, std::size_t) {
 
 void Client::async_read_pb_msg(Serialize::Header new_header) {
     __read_buffer.resize(new_header.length());
-    switch (static_cast<TypeCommand>(new_header.command())) {
-        case TypeCommand::AuthorisationResponse:
+    switch (static_cast<goodok::command::TypeCommand>(new_header.command())) {
+        case goodok::command::TypeCommand::AuthorisationResponse:
             qDebug()<< "AutorisationResponse:"  ;
             boost::asio::async_read(sock, boost::asio::buffer(__read_buffer),
                                       std::bind(&Client::do_read_input_response,
@@ -102,38 +102,38 @@ void Client::async_read_pb_msg(Serialize::Header new_header) {
                                                 std::placeholders::_1,
                                                 std::placeholders::_2));
         break;
-        case TypeCommand::RegistrationResponse:
+        case goodok::command::TypeCommand::RegistrationResponse:
             boost::asio::async_read(sock, boost::asio::buffer(__read_buffer),
                                       std::bind(&Client::do_read_reg_response,
                                                 shared_from_this(),
                                                 std::placeholders::_1,
                                                 std::placeholders::_2));
         break;
-        case TypeCommand::EchoRequest:
+        case goodok::command::TypeCommand::SendTextRequest:
 //            qDebug()<< "EchoRequest: "  ;
         break;
-        case TypeCommand::EchoResponse:
+        case goodok::command::TypeCommand::EchoResponse:
             boost::asio::async_read(sock, boost::asio::buffer(__read_buffer),
                                       std::bind(&Client::do_read_echo_response,
                                                 shared_from_this(),
                                                 std::placeholders::_1,
                                                 std::placeholders::_2));
         break;
-        case TypeCommand::JoinRoomResponse:
+        case goodok::command::TypeCommand::JoinRoomResponse:
             boost::asio::async_read(sock, boost::asio::buffer(__read_buffer),
                                       std::bind(&Client::do_read_join_room_response,
                                                 shared_from_this(),
                                                 std::placeholders::_1,
                                                 std::placeholders::_2));
         break;
-        case TypeCommand::HistoryResponse:
+        case goodok::command::TypeCommand::HistoryResponse:
             boost::asio::async_read(sock, boost::asio::buffer(__read_buffer),
                                       std::bind(&Client::do_read_history_response,
                                                 shared_from_this(),
                                                 std::placeholders::_1,
                                                 std::placeholders::_2));
         break;
-        case TypeCommand::ChannelsResponse:
+        case goodok::command::TypeCommand::ChannelsResponse:
             boost::asio::async_read(sock, boost::asio::buffer(__read_buffer),
                                       std::bind(&Client::do_read_channels_response,
                                                 shared_from_this(),
@@ -164,9 +164,9 @@ void Client::do_read_input_response(boost::system::error_code error, std::size_t
             qDebug()<< "response include input_response";
             if (response.input_response().status() == Serialize::STATUS::OK) {
                 qDebug()<< "Autorisation response: OK";
-                emit send_input_code(StatusCode::AutorOK);
+                emit send_input_code(goodok::command::StatusCode::AutorOK);
             } else {
-                emit send_input_code(StatusCode::IncorrectAutor);
+                emit send_input_code(goodok::command::StatusCode::IncorrectAutor);
                 qWarning() << "Not found login/password";
                 close_connection();
                 return;
@@ -207,9 +207,9 @@ void Client::do_read_reg_response(boost::system::error_code error, std::size_t )
             qDebug()<< "response include reg_response";
             if (response.reg_response().status() == Serialize::STATUS::OK) {
                 qDebug()<< "Registration response: OK, client_id=" << response.reg_response().client_id();
-                emit send_input_code(StatusCode::RegistrOK);
+                emit send_input_code(goodok::command::StatusCode::RegistrOK);
             } else {
-                emit send_input_code(StatusCode::BusyRegistr);
+                emit send_input_code(goodok::command::StatusCode::BusyRegistr);
                 qWarning() << "Registration response: FAIL, busy login";
                 close_connection();
                 return;
@@ -278,7 +278,7 @@ void Client::do_read_echo_response(boost::system::error_code error, std::size_t)
             qWarning() << "parse echo_response: FAIL";
         }
 
-        msg_text_t v_msg = Protocol::MsgFactory::parse_text_res(new_response);
+        goodok::command::msg_text_t v_msg = goodok::MsgFactory::parse_text_res(new_response);
 
         m_channels_history[v_msg.channel_name]->push_back(v_msg);
         
@@ -327,11 +327,11 @@ void Client::do_read_history_response(boost::system::error_code error, std::size
     auto hr = response.history_response();
     const auto channel_name = hr.channel_name();
     
-    std::vector<msg_text_t> hist;
+    std::vector<goodok::command::msg_text_t> hist;
 
     for (const auto& text_response : *hr.mutable_messages()) {
-        const auto msg = Protocol::MsgFactory::parse_text_res(text_response);
-        m_channels_history.try_emplace(channel_name, std::make_shared<std::deque<msg_text_t>>());
+        const auto msg = goodok::MsgFactory::parse_text_res(text_response);
+        m_channels_history.try_emplace(channel_name, std::make_shared<std::deque<goodok::command::msg_text_t>>());
         m_channels_history[channel_name]->push_back(msg);
         hist.push_back(msg);
     }
@@ -413,14 +413,14 @@ void Client::join_channel(std::string a_new_channel) {
     qDebug() << "called Client::join_channel: " << a_new_channel.data() 
                 << ", from client_id=" << client_id;
     
-    auto v_bin_buffer = Protocol::MsgFactory::serialize<TypeCommand::JoinRoomRequest>(
+    auto v_bin_buffer = goodok::MsgFactory::serialize<goodok::command::TypeCommand::JoinRoomRequest>(
         client_id, a_new_channel
     );
     add_msg_to_send(std::move(v_bin_buffer));
 }
 
-void Client::send_msg_to_server(msg_text_t a_msg) {
-    auto a_bin_buffer = Protocol::MsgFactory::serialize<TypeCommand::EchoRequest>(a_msg);
+void Client::send_msg_to_server(goodok::command::msg_text_t a_msg) {
+    auto a_bin_buffer = goodok::MsgFactory::serialize<goodok::command::TypeCommand::SendTextRequest>(a_msg);
     add_msg_to_send(std::move(a_bin_buffer));
 }
 

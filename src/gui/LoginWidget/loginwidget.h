@@ -17,7 +17,7 @@ public:
     explicit LoginWidget(QWidget *parent = nullptr);
     ~LoginWidget();
 
-    void handler_input_code(StatusCode input_code);
+    void handler_input_code(goodok::command::StatusCode input_code);
 
 signals:
     void send_autorisation_info(const std::string& login, const std::string& password);

@@ -50,15 +50,15 @@ set(CLIENT_SOURCES
     ${Cache_dir}/history_cacher.cpp
 )
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
 find_package (Threads)
-find_library(protocol_lib "/usr/local/lib/goodok" REQUIRED)
+find_library(PROTOCOL NAMES protocol_lib HINTS "/usr/local/lib/goodok")
 
 add_executable(${CLIENT_NAME}  ${CLIENT_SOURCES})
-conan_target_link_libraries(${CLIENT_NAME})
+#conan_target_link_libraries(${CLIENT_NAME})
 
 #find_library(SQLITE3_LIBRARY NAMES sqlite3)
-#find_package(Boost COMPONENTS system log REQUIRED)
+find_package(Boost COMPONENTS system log REQUIRED)
 
 set_target_properties(${CLIENT_NAME} PROPERTIES
         CXX_STANDARD 17
@@ -67,6 +67,7 @@ set_target_properties(${CLIENT_NAME} PROPERTIES
 #        COMPILE_OPTIONS "-std=c++17;-O2;-Wall;-Wextra;-Wpedantic"
 		COMPILE_OPTIONS "-fPIC"
 )
+#   set(CMAKE_CXX_FLAGS "-fPIC")
 
 target_include_directories(${CLIENT_NAME}
     PRIVATE
@@ -75,8 +76,8 @@ target_include_directories(${CLIENT_NAME}
         ${GUI_dir}
 )
 target_link_libraries (${CLIENT_NAME}
-    ${CONAN_LIBS_QT}
-	protocol_lib
+	${CONAN_LIBS}
+	${PROTOCOL}
 )
 
 

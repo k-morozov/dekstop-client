@@ -24,13 +24,13 @@ public:
   void set_client(std::shared_ptr<client_t> client);
 
 protected slots:
-  void on_authorized(StatusCode code);
+  void on_authorized(goodok::command::StatusCode code);
 
   void on_joined(const std::string& channel_name);
   
-  void on_message_received(const msg_text_t& message);
+  void on_message_received(const goodok::command::msg_text_t& message);
 
-  void on_history_received(const std::string& channel_name, const std::vector<msg_text_t>& hist);
+  void on_history_received(const std::string& channel_name, const std::vector<goodok::command::msg_text_t>& hist);
 
   void on_channels_received(const std::vector<std::string>& channels);
 

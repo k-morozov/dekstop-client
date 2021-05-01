@@ -12,7 +12,7 @@ ChatDelegate::ChatDelegate(QWidget *parent)
 
 QSize ChatDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    msg_text_t item = get_message(index);
+    goodok::command::msg_text_t item = get_message(index);
     QRect MessageRect = option.rect;
     MessageRect.setY( OffsetMsgFromLogin + option.rect.y());
     MessageRect.setX(textOffset);
@@ -34,7 +34,7 @@ QSize ChatDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelInd
 
 void ChatDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    msg_text_t item = get_message(index);
+    goodok::command::msg_text_t item = get_message(index);
     QStyleOptionViewItem myOpt = option;
     myOpt.displayAlignment =  Qt::AlignVCenter;
     painter->save();
@@ -116,7 +116,7 @@ void ChatDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewI
     editor->setGeometry(option.rect);
 }
 
-msg_text_t ChatDelegate::get_message(const QModelIndex& index) const {
+goodok::command::msg_text_t ChatDelegate::get_message(const QModelIndex& index) const {
     const auto parent_ptr = qobject_cast<MainWindow*>(parent());
     const auto channel = parent_ptr->current_channel();
     const auto hist_ptr = parent_ptr->history(channel);

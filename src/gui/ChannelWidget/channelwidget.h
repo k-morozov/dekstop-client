@@ -16,16 +16,16 @@ public:
   explicit ChannelWidget(QWidget *parent = nullptr);
   ~ChannelWidget();
 
-  void set_channel(const chat_t& datachat);
+  void set_channel(const goodok::command::chat_t& datachat);
 
   QString channel_name() const;
-  const messages_ptr history() const;
+  const goodok::command::messages_ptr history() const;
 
   void update_displayed_msg();
 
 private:
   Ui::ChannelWidget *ui;
-  messages_ptr history_;
+    goodok::command::messages_ptr history_;
 
 };
 

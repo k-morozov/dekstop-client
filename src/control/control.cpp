@@ -14,9 +14,9 @@ Control::Control(Storage::SqliteConfig config)
 
     qRegisterMetaType<std::string>("std::string");
     qRegisterMetaType<QTextCursor>("QTextCursor");
-    qRegisterMetaType<StatusCode>("StatusCode");
-    qRegisterMetaType<DateTime>("DateTime");
-    qRegisterMetaType<ClientTextMsg>("ClientTextMsg");
+    qRegisterMetaType<goodok::command::StatusCode>("StatusCode");
+    qRegisterMetaType<goodok::DateTime>("DateTime");
+    qRegisterMetaType<goodok::command::ClientTextMsg>("ClientTextMsg");
 
     connect(login_widget.get(), &LoginWidget::send_autorisation_info, this, &Control::autorisation);
     connect(login_widget.get(), &LoginWidget::send_registration_info, this, &Control::registration);
@@ -39,7 +39,7 @@ void Control::run_app(int argc, char** argv) {
     login_widget->show();
 }
 
-void Control::connect_to_server(const std::string& login, const std::string& password, TypeCommand command) {
+void Control::connect_to_server(const std::string& login, const std::string& password, goodok::command::TypeCommand command) {
     qDebug() <<  "connect_to_server()";
 
     boost::asio::io_service io_service;
@@ -49,11 +49,11 @@ void Control::connect_to_server(const std::string& login, const std::string& pas
     std::vector<uint8_t> bin_buffer;
 
     switch (command) {
-    case TypeCommand::RegistrationRequest:
-        bin_buffer = Protocol::MsgFactory::serialize<TypeCommand::RegistrationRequest>(login, password);
+    case goodok::command::TypeCommand::RegistrationRequest:
+        bin_buffer = goodok::MsgFactory::serialize<goodok::command::TypeCommand::RegistrationRequest>(login, password);
         break;
-    case TypeCommand::AuthorisationRequest:
-        bin_buffer = Protocol::MsgFactory::serialize<TypeCommand::AuthorisationRequest>(login, password);
+    case goodok::command::TypeCommand::AuthorisationRequest:
+        bin_buffer = goodok::MsgFactory::serialize<goodok::command::TypeCommand::AuthorisationRequest>(login, password);
         break;
     default: break;
     }
@@ -94,7 +94,7 @@ Control::~Control() {
 void Control::autorisation(const std::string& login, const std::string& password) {
     std::thread th([this, login, password]() {
         try {
-            connect_to_server(login, password, TypeCommand::AuthorisationRequest);
+            connect_to_server(login, password, goodok::command::TypeCommand::AuthorisationRequest);
         } catch (std::exception &ex) {
              qDebug() << "exception from thread: " << ex.what();
         }
@@ -105,7 +105,7 @@ void Control::autorisation(const std::string& login, const std::string& password
 void Control::registration(const std::string& login, const std::string& password) {
     std::thread th([this, login, password]() {
         try {
-            connect_to_server(login, password, TypeCommand::RegistrationRequest);
+            connect_to_server(login, password, goodok::command::TypeCommand::RegistrationRequest);
         } catch (std::exception &ex) {
              qDebug() << "exception from thread: " << ex.what();
         }
@@ -113,15 +113,15 @@ void Control::registration(const std::string& login, const std::string& password
     th.detach();
 }
 
-void Control::get_text_from_gui(msg_text_t msg) {
+void Control::get_text_from_gui(goodok::command::msg_text_t msg) {
     qDebug() << "send msg to server: " << msg.dt.time.hours << ":" << msg.dt.time.minutes ;
     client->send_msg_to_server(msg);
 }
 
-void Control::text_from_client(const msg_text_t& msg) { emit send_text_to_gui(msg); }
+void Control::text_from_client(const goodok::command::msg_text_t& msg) { emit send_text_to_gui(msg); }
 
-void Control::change_window(StatusCode a_code) {
-    if (a_code == StatusCode::BusyRegistr || a_code == StatusCode::IncorrectAutor) {
+void Control::change_window(goodok::command::StatusCode a_code) {
+    if (a_code == goodok::command::StatusCode::BusyRegistr || a_code == goodok::command::StatusCode::IncorrectAutor) {
         login_widget->handler_input_code(a_code);
     }
     else {
@@ -149,7 +149,7 @@ void Control::joined(const std::string& channel_name)
   main_window->joined(channel_name, ptr);
 }
 
-void Control::history_received(const std::string& channel_name, const std::vector<msg_text_t>& )
+void Control::history_received(const std::string& channel_name, const std::vector<goodok::command::msg_text_t>& )
 {
   main_window->history_received(channel_name);
 }

@@ -1,7 +1,7 @@
 #include "history_cacher.h"
 
 Q_DECLARE_METATYPE(std::vector<std::string>)
-Q_DECLARE_METATYPE(std::vector<msg_text_t>)
+Q_DECLARE_METATYPE(std::vector<goodok::command::msg_text_t>)
 
 namespace Storage {
 
@@ -9,7 +9,7 @@ HistoryCacher::HistoryCacher(cache_t&& cache, QObject* parent)
   : QObject(parent), cache_(std::forward<cache_t>(cache)), client_(nullptr)
 {
   qRegisterMetaType<std::vector<std::string>>("std::vector<std::string>");
-  qRegisterMetaType<std::vector<msg_text_t>>("std::vector<msg_text_t>");
+  qRegisterMetaType<std::vector<goodok::command::msg_text_t>>("std::vector<msg_text_t>");
 }
 
 
@@ -34,9 +34,9 @@ void HistoryCacher::set_client(std::shared_ptr<client_t> client)
   }
 }
 
-void HistoryCacher::on_authorized(StatusCode code)
+void HistoryCacher::on_authorized(goodok::command::StatusCode code)
 {
-  if (code != StatusCode::AutorOK) {
+  if (code != goodok::command::StatusCode::AutorOK) {
     return;
   }
 
@@ -64,19 +64,19 @@ void HistoryCacher::on_joined(const std::string& channel_name)
     }
   );
 
-  const auto since = it == ptr->end() ? DateTime{} : it->dt;
+  const auto since = it == ptr->end() ? goodok::DateTime{} : it->dt;
 
   client_->send_history_request(channel_name, since);
 }
 
 
-void HistoryCacher::on_message_received(const msg_text_t& message)
+void HistoryCacher::on_message_received(const goodok::command::msg_text_t& message)
 {
   cache_.save(message.channel_name, message);
 }
 
 
-void HistoryCacher::on_history_received(const std::string& channel, const std::vector<msg_text_t>& hist)
+void HistoryCacher::on_history_received(const std::string& channel, const std::vector<goodok::command::msg_text_t>& hist)
 {
   for (const auto& message : hist) {
     cache_.save(channel, message);
@@ -88,7 +88,7 @@ void HistoryCacher::on_channels_received(const std::vector<std::string>& channel
   for (const auto& channel : channels) {
     const auto messages = cache_.load(channel);
 
-    DateTime since;
+      goodok::DateTime since;
 
     if (!messages.empty()) {
       since = messages.back().dt;
