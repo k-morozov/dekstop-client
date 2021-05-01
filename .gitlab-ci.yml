@@ -1,21 +1,16 @@
 image: registry.gitlab.com/goodok-chat/messaging-framework:latest
 stages:
   - build
-Conan:
+variables:
+  CONAN_SYSREQUIRES_MODE: enabled
+Build:
   stage: build
   before_script:
-#    - apt-get update
-#    - apt-get install sudo -y
-#    - apt-get install -y pkg-config
-#    - apt upgrade
-#    - apt-get install -y python3-pip
-#    - pip3 install conan
-#    - source ~/.profile
-  script:
     - mkdir build && cd build
     - conan profile new goodok-profile --detect
     - conan profile update settings.compiler.version=9.3 goodok-profile
     - conan profile update settings.compiler.libcxx=libstdc++11 goodok-profile
     - conan remote add bincrafters https://api.bintray.com/conan/bincrafters/public-conan
-    - conan install .. --build missing --profile goodok-profile
+  script:
+    - conan install .. --profile goodok-profile
 #    - conan install -s build_type=Release .. --build missing --profile goodok-profile
