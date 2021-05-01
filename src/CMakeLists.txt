@@ -54,22 +54,8 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 find_package (Threads)
 find_library(protocol_lib "/usr/local/lib/goodok" REQUIRED)
 
-#link_directories("${CMAKE_SOURCE_DIR}/3rdParty/goodok/protocol_lib")
-
-#add_library(protocol_lib STATIC IMPORTED) # or STATIC instead of SHARED
-#set_target_properties(protocol_lib PROPERTIES
-#  IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/3rdParty/goodok/protocol_lib.so"
-##  INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/include/libbar"
-#)
-
 add_executable(${CLIENT_NAME}  ${CLIENT_SOURCES})
 conan_target_link_libraries(${CLIENT_NAME})
-#add_library(messages_pb_lib STATIC messages.pb.cc)
-#target_link_libraries(messages_pb_lib protobuf)
-#set_target_properties(messages_pb_lib PROPERTIES
-#        CXX_STANDARD 17
-#        CXX_STANDARD_REQUIRED ON
-#)
 
 #find_library(SQLITE3_LIBRARY NAMES sqlite3)
 #find_package(Boost COMPONENTS system log REQUIRED)
@@ -79,6 +65,7 @@ set_target_properties(${CLIENT_NAME} PROPERTIES
         CXX_STANDARD_REQUIRED ON
         LINK_LIBRARIES pthread
 #        COMPILE_OPTIONS "-std=c++17;-O2;-Wall;-Wextra;-Wpedantic"
+		COMPILE_OPTIONS "-fPIC"
 )
 
 target_include_directories(${CLIENT_NAME}
