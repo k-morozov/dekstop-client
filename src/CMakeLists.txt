@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 set(CLIENT_NAME appchat-client)
 
+set(QT_DEBUG_PLUGINS 1)
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
