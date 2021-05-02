@@ -24,13 +24,13 @@ struct SqliteConfig
 
 using sqlite3_ptr = std::unique_ptr<sqlite3, int(*)(sqlite3*)>;
 
-class SqliteCache : ICache<std::string, msg_text_t>
+class SqliteCache : ICache<std::string, goodok::command::msg_text_t>
 {
 public:
-  using key_t         = typename ICache<std::string, msg_text_t>::key_t;
-  using value_t       = typename ICache<std::string, msg_text_t>::value_t;
-  using key_list_t    = typename ICache<std::string, msg_text_t>::key_list_t;
-  using value_list_t  = typename ICache<std::string, msg_text_t>::value_list_t;
+  using key_t         = typename ICache<std::string, goodok::command::msg_text_t>::key_t;
+  using value_t       = typename ICache<std::string, goodok::command::msg_text_t>::value_t;
+  using key_list_t    = typename ICache<std::string, goodok::command::msg_text_t>::key_list_t;
+  using value_list_t  = typename ICache<std::string, goodok::command::msg_text_t>::value_list_t;
 
   explicit SqliteCache(SqliteConfig config)
     : config_(std::move(config))
@@ -151,10 +151,10 @@ protected:
 private:
   const std::string create_table_query_ = 
     "CREATE TABLE IF NOT EXISTS history("s
-    + "author VARCHAR["s + std::to_string(Block::LoginName) + "], "s
-    + "channel_name VARCHAR["s + std::to_string(Block::LoginName) + "], "s
+    + "author VARCHAR["s + std::to_string(goodok::command::Block::LoginName) + "], "s
+    + "channel_name VARCHAR["s + std::to_string(goodok::command::Block::LoginName) + "], "s
     + "datetime VARCHAR[14], "s
-    + "message VARCHAR["s + std::to_string(Block::TextMessage) + "]);"s;
+    + "message VARCHAR["s + std::to_string(goodok::command::Block::TextMessage) + "]);"s;
 
   void create_folder()
   {

@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 set(CLIENT_NAME appchat-client)
 
+set(QT_DEBUG_PLUGINS 1)
+
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
@@ -50,36 +52,23 @@ set(CLIENT_SOURCES
     ${Cache_dir}/history_cacher.cpp
 )
 
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core Widgets Gui REQUIRED)
 find_package (Threads)
-find_library(protocol_lib "/usr/local/lib/goodok" REQUIRED)
-
-#link_directories("${CMAKE_SOURCE_DIR}/3rdParty/goodok/protocol_lib")
-
-#add_library(protocol_lib STATIC IMPORTED) # or STATIC instead of SHARED
-#set_target_properties(protocol_lib PROPERTIES
-#  IMPORTED_LOCATION "${CMAKE_SOURCE_DIR}/3rdParty/goodok/protocol_lib.so"
-##  INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_SOURCE_DIR}/include/libbar"
-#)
+find_library(PROTOCOL NAMES protocol_lib HINTS "/usr/local/lib/goodok")
 
 add_executable(${CLIENT_NAME}  ${CLIENT_SOURCES})
-conan_target_link_libraries(${CLIENT_NAME})
-#add_library(messages_pb_lib STATIC messages.pb.cc)
-#target_link_libraries(messages_pb_lib protobuf)
-#set_target_properties(messages_pb_lib PROPERTIES
-#        CXX_STANDARD 17
-#        CXX_STANDARD_REQUIRED ON
-#)
 
-#find_library(SQLITE3_LIBRARY NAMES sqlite3)
-#find_package(Boost COMPONENTS system log REQUIRED)
+find_library(SQLITE3_LIBRARY NAMES sqlite3)
+find_package(Boost COMPONENTS system log REQUIRED)
 
 set_target_properties(${CLIENT_NAME} PROPERTIES
         CXX_STANDARD 17
         CXX_STANDARD_REQUIRED ON
         LINK_LIBRARIES pthread
 #        COMPILE_OPTIONS "-std=c++17;-O2;-Wall;-Wextra;-Wpedantic"
+		COMPILE_OPTIONS "-fPIC"
 )
+#   set(CMAKE_CXX_FLAGS "-fPIC")
 
 target_include_directories(${CLIENT_NAME}
     PRIVATE
@@ -88,8 +77,9 @@ target_include_directories(${CLIENT_NAME}
         ${GUI_dir}
 )
 target_link_libraries (${CLIENT_NAME}
-    ${CONAN_LIBS_QT}
-	protocol_lib
+		Qt5::Widgets
+	${CONAN_LIBS}
+	${PROTOCOL}
 )
 
 

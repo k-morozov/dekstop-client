@@ -16,7 +16,7 @@ public:
   explicit MessageWidget(QWidget *parent = nullptr);
   ~MessageWidget();
 
-  void set_message(const msg_text_t& msg);
+  void set_message(const goodok::command::msg_text_t& msg);
 
 private:
   Ui::MessageWidget *ui;

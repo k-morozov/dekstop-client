@@ -32,6 +32,6 @@ private:
     int rightMessageOffset = 10;
     float baseTextHeight = 20;
 
-    msg_text_t get_message(const QModelIndex& index) const;
+    goodok::command::msg_text_t get_message(const QModelIndex& index) const;
 };
 #endif // CHATDELEGATE_H

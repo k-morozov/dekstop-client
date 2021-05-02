@@ -31,7 +31,7 @@ public:
      * it could be AutorisationRequest or RegistrationRequest
      * @todo fix noreturn
      */
-    void connect_to_server(const std::string& login, const std::string& password, TypeCommand command);
+    void connect_to_server(const std::string& login, const std::string& password, goodok::command::TypeCommand command);
 
     /**
      * @brief Close client socket when destroy UI controller.
@@ -42,9 +42,9 @@ signals:
     /**
      * @brief Show reveived message
      */
-    void send_text_to_gui(const msg_text_t&);
+    void send_text_to_gui(const goodok::command::msg_text_t&);
 
-    void send_input_code(StatusCode);
+    void send_input_code(goodok::command::StatusCode);
 
 public slots:
     /**
@@ -69,7 +69,7 @@ public slots:
      * @param text message content
      * @param room_id sender's room
      */
-    void get_text_from_gui(msg_text_t msg);
+    void get_text_from_gui(goodok::command::msg_text_t msg);
 
     /**
      * @brief Notify UI about received message
@@ -77,14 +77,14 @@ public slots:
      * @param text message content
      * @param dt date and time of sending the text
      */
-    void text_from_client(const msg_text_t& msg);
+    void text_from_client(const goodok::command::msg_text_t& msg);
 
 
     /**
      * @brief change_window
      * @todo IWindow - classes
      */
-    void change_window(StatusCode a_code);
+    void change_window(goodok::command::StatusCode a_code);
 
     void join_to_channel(const std::string& channel_name);
 
@@ -92,7 +92,7 @@ public slots:
 
     void joined(const std::string& channel_name);
 
-    void history_received(const std::string& channel_name, const std::vector<msg_text_t>& hist);
+    void history_received(const std::string& channel_name, const std::vector<goodok::command::msg_text_t>& hist);
 
 private:
     std::shared_ptr<Client> client;
@@ -106,7 +106,7 @@ private:
      * @todo convert to 4 bytes
      */
     std::string ip = "127.0.0.1";
-    int32_t port = SERVER_DEFAULT_PORT;
+    int32_t port = goodok::command::SERVER_DEFAULT_PORT;
 };
 
 #endif // CONTROL_H

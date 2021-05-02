@@ -52,23 +52,23 @@ void LoginWidget::on_push_registration_clicked()
     this->setCurrentWidget(m_reg);
 }
 
-void LoginWidget::handler_input_code(StatusCode code) {
+void LoginWidget::handler_input_code(goodok::command::StatusCode code) {
     ui->logon->clear();
     ui->password->clear();
 
     switch (code) {
-        case StatusCode::RegistrOK:
+        case goodok::command::StatusCode::RegistrOK:
             QMessageBox::information(this, "registration", "You successfully registered.");
         break;
 
-        case StatusCode::BusyRegistr:
+        case goodok::command::StatusCode::BusyRegistr:
             QMessageBox::information(this, "error from server", "this login is already registered.");
         break;
 
-        case StatusCode::AutorOK:
+        case goodok::command::StatusCode::AutorOK:
         break;
 
-        case StatusCode::IncorrectAutor:
+        case goodok::command::StatusCode::IncorrectAutor:
             QMessageBox::information(this, "error from server", "check login/password");
         break;
     default:

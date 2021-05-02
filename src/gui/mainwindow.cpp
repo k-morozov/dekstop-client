@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
   ui->teMessage->hide();
   ui->bSend->hide();
 
-  ui->teMessage->set_max_length(Block::TextMessage);
+  ui->teMessage->set_max_length(goodok::command::Block::TextMessage);
 
   connect(ui->lwChannels, &QListWidget::itemSelectionChanged, this, &MainWindow::channel_selected);
   connect(ui->bJoin, &QPushButton::clicked, this, &MainWindow::join_clicked);
@@ -40,12 +40,12 @@ std::string MainWindow::current_channel() const
   return ui->lChannelName->text().toStdString();
 }
 
-messages_ptr MainWindow::history(const std::string& channel_name)
+goodok::command::messages_ptr MainWindow::history(const std::string& channel_name)
 {
   return channels_[channel_name]->history();
 }
 
-void MainWindow::channel_received(const std::string& channel, messages_ptr history)
+void MainWindow::channel_received(const std::string& channel, goodok::command::messages_ptr history)
 {
   add_channel({channel, 1, 1, history});
 }
@@ -92,7 +92,7 @@ void MainWindow::send_clicked()
   if (text.empty())
     return;
 
-  msg_text_t msg {
+    goodok::command::msg_text_t msg {
     login_,                                 // Author
     text,                                   // Text
     ui->lChannelName->text().toStdString(), // Channel name
@@ -104,12 +104,12 @@ void MainWindow::send_clicked()
   ui->teMessage->clear();
 }
 
-void MainWindow::joined(const std::string& channel_name, messages_ptr history)
+void MainWindow::joined(const std::string& channel_name, goodok::command::messages_ptr history)
 {
   add_channel({channel_name, 1, 1, history});
 }
 
-void MainWindow::message_received(const msg_text_t& msg)
+void MainWindow::message_received(const goodok::command::msg_text_t& msg)
 {
   const auto it = channels_.find(msg.channel_name);
   it->second->update_displayed_msg();
@@ -119,7 +119,7 @@ void MainWindow::message_received(const msg_text_t& msg)
   }
 }
 
-void MainWindow::add_channel(chat_t datachat)
+void MainWindow::add_channel(goodok::command::chat_t datachat)
 {
   channels_[datachat.name] = std::make_unique<ChannelWidget>();
   channels_[datachat.name]->set_channel(datachat);

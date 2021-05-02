@@ -10,16 +10,16 @@
 #include <QDate>
 
 
-Q_DECLARE_METATYPE(msg_text_t)
-Q_DECLARE_METATYPE(chat_t)
+Q_DECLARE_METATYPE(goodok::command::msg_text_t)
+Q_DECLARE_METATYPE(goodok::command::chat_t)
 
-inline DateTime get_current_DateTime() {
+inline goodok::DateTime get_current_DateTime() {
     QDate cd = QDate::currentDate();
     QTime ct = QTime::currentTime();
-    Date date(cd.day(), cd.month(), cd.year());
-    Time time(ct.second(), ct.minute(), ct.hour());
+    goodok::Date date(cd.day(), cd.month(), cd.year());
+    goodok::Time time(ct.second(), ct.minute(), ct.hour());
 
-    DateTime dt(time, date);
+    goodok::DateTime dt(time, date);
     return dt;
 }
 

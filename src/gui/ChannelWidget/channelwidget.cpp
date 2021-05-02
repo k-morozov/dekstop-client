@@ -17,7 +17,7 @@ ChannelWidget::~ChannelWidget()
   delete ui;
 }
 
-void ChannelWidget::set_channel(const chat_t& datachat)
+void ChannelWidget::set_channel(const goodok::command::chat_t& datachat)
 {
   history_ = datachat.history_ptr;
   ui->lChannelName->setText(QString::fromStdString(datachat.name));
@@ -29,7 +29,7 @@ QString ChannelWidget::channel_name() const
   return ui->lChannelName->text();
 }
 
-const messages_ptr ChannelWidget::history() const
+const goodok::command::messages_ptr ChannelWidget::history() const
 {
   return history_;
 }
