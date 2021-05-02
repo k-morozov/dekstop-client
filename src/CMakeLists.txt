@@ -58,7 +58,7 @@ find_library(PROTOCOL NAMES protocol_lib HINTS "/usr/local/lib/goodok")
 
 add_executable(${CLIENT_NAME}  ${CLIENT_SOURCES})
 
-#find_library(SQLITE3_LIBRARY NAMES sqlite3)
+find_library(SQLITE3_LIBRARY NAMES sqlite3)
 find_package(Boost COMPONENTS system log REQUIRED)
 
 set_target_properties(${CLIENT_NAME} PROPERTIES
@@ -77,6 +77,7 @@ target_include_directories(${CLIENT_NAME}
         ${GUI_dir}
 )
 target_link_libraries (${CLIENT_NAME}
+		Qt5::Widgets
 	${CONAN_LIBS}
 	${PROTOCOL}
 )
