@@ -1,5 +1,5 @@
 #image: registry.gitlab.com/goodok-chat/messaging-framework:latest
-image: kstmorozov/client-dekstop:latest
+image: registry.gitlab.com/goodok-chat/client/dekstop
 stages:
   - build
 variables:
