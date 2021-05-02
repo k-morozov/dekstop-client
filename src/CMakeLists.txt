@@ -57,7 +57,6 @@ find_package (Threads)
 find_library(PROTOCOL NAMES protocol_lib HINTS "/usr/local/lib/goodok")
 
 add_executable(${CLIENT_NAME}  ${CLIENT_SOURCES})
-#conan_target_link_libraries(${CLIENT_NAME})
 
 #find_library(SQLITE3_LIBRARY NAMES sqlite3)
 find_package(Boost COMPONENTS system log REQUIRED)
