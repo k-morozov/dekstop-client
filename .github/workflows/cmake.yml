@@ -48,5 +48,5 @@ jobs:
 #         ctest -C ${{env.BUILD_TYPE}}
 #         # cmake --build ${{github.workspace}}/build --target test
       
-    - name: Package
-      run: cmake --build ${{github.workspace}}/build --target package
+#     - name: Package
+#       run: cmake --build ${{github.workspace}}/build --target package
