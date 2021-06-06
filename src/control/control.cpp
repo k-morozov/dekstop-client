@@ -17,6 +17,7 @@ Control::Control(Storage::SqliteConfig config)
     qRegisterMetaType<goodok::command::StatusCode>("StatusCode");
     qRegisterMetaType<goodok::DateTime>("DateTime");
     qRegisterMetaType<goodok::command::ClientTextMsg>("ClientTextMsg");
+    qRegisterMetaType<goodok::command::StatusCode>("goodok::command::StatusCode");
 
     connect(login_widget.get(), &LoginWidget::send_autorisation_info, this, &Control::autorisation);
     connect(login_widget.get(), &LoginWidget::send_registration_info, this, &Control::registration);
