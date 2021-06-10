@@ -30,6 +30,7 @@ matrix:
           - /home/travis/.conan
       script:
         - mkdir -p ${BUILD_DIR}  && cd ${BUILD_DIR} && mkdir -p proto
+        - sudo apt-get install -y libgl1-mesa-dev
         - conan profile new goodok-profile --detect --force
         - conan profile update settings.compiler.version=10 goodok-profile
         - conan profile update settings.compiler.libcxx=libstdc++11 goodok-profile
