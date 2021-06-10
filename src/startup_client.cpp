@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
 
     Storage::SqliteConfig config;
     config.folder_path = std::string{std::getenv("HOME")} + "/AppChat/";
-    config.connection_string = "file://" + config.folder_path + "cache.db";
+    config.connection_string = "file://" + config.folder_path + "cacheAAA.db";
 
     Control control(config);
     control.run_app(argc, argv);
