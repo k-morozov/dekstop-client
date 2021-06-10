@@ -15,6 +15,7 @@ Control::Control(Storage::SqliteConfig config)
     qRegisterMetaType<std::string>("std::string");
     qRegisterMetaType<QTextCursor>("QTextCursor");
     qRegisterMetaType<goodok::command::StatusCode>("StatusCode");
+    qRegisterMetaType<goodok::command::StatusCode>("goodok::command::StatusCode");
     qRegisterMetaType<goodok::DateTime>("DateTime");
     qRegisterMetaType<goodok::command::ClientTextMsg>("ClientTextMsg");
 
