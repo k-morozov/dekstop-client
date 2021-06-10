@@ -82,5 +82,8 @@ target_link_libraries (${CLIENT_NAME}
 	${PROTOCOL}
 )
 
+install(TARGETS ${CLIENT_NAME}
+        DESTINATION
+            "/usr/local/bin/goodok")
 
 
