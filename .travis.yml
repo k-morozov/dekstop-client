@@ -45,11 +45,11 @@ matrix:
       before_deploy:
         - git config --local user.name "k-morozov"
         - git config --local user.email "morozov-kst@yandex.ru"
-        - git tag 0.8.$TRAVIS_BUILD_NUMBER-Linux
+        - git tag 0.1.$TRAVIS_BUILD_NUMBER-Linux
       deploy:
         - provider: releases
           api_key: $DEKSTOP_TOKEN
-          file: goodok-dekstop-0.8.$TRAVIS_BUILD_NUMBER-Linux.deb
+          file: goodok-dekstop-0.1.$TRAVIS_BUILD_NUMBER-Linux.deb
           skip_cleanup: true
           on:
             branch: master
