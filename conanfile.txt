@@ -4,7 +4,7 @@ boost/1.73.0
 sqlite3/3.35.5
 qt/5.15.2
 
-zlib/1.2.11@conan/stable
+zlib/1.2.11
 libiconv/1.16
 
 [generators]
